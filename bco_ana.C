@@ -64,7 +64,8 @@ void bco_ana()
             tree->GetEntry(n);
 
             if(felix_server != 2)continue;
-            if(!(0 <= felix_module && felix_module < 7))continue;
+            //if(!(0 <= felix_module && felix_module < 7))continue;
+            if(felix_module != 0)continue;
 
             if(evt != prev_evt)
             {
@@ -94,7 +95,6 @@ void bco_ana()
     bco_tree->Draw("hitrate:delay");
 
     cnvs->SaveAs("hitrate_v_delay.png");
-    delete cnvs;
 
     TFile* file = TFile::Open(root_file.c_str(), "RECREATE");
     file->cd();
