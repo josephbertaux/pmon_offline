@@ -32,13 +32,15 @@ int pinit()
 
 int process_event(Event* e)
 {
-    if(!e)return 1;
+    if(!e)return 0;
 
     Packet* p = e->getPacket(values.felix_server + 3001);
-    if(!p)return 1;
+    if(!p)return 0;
 
     int N = p->iValue(0, "NR_HITS");
-    if(!N)return 1;
+    if(!N)return 0;
+
+    //printf("%d", N);
 
     for(int n = 0; n < N; ++n)
     {

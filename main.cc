@@ -8,10 +8,12 @@
 
 #include <TFile.h>
 
+std::string text_file = "/home/phnxrc/INTT/commissioning_5_23/HITS_PER_EVENT_BY_RUN.txt";
 std::string output_path = "/home/phnxrc/INTT/commissioning_5_23/hit_files/";
 
 int main(int argc, char** argv)
 {
+    FILE* fptr = fopen(text_file.c_str(), "a");
     std::string filename;
 
     std::vector<std::string> replacements = {"_", "-", "."};
@@ -20,7 +22,7 @@ int main(int argc, char** argv)
     for(int c = 1; c < argc; ++c)
     {
         filename = argv[c];
-        if(pfileopen(filename.c_str()))continue;
+        pfileopen(filename.c_str());
 
         while(true)
         {
@@ -48,20 +50,21 @@ int main(int argc, char** argv)
 
         prun();
 
-        printf("Hits per event: %lf", (double)values.tot_hits / (double)values.evt);
+        printf("Hits per event: %lf\n", (double)values.tot_hits / (double)values.evt);
+        if(fptr)fprintf(fptr, "%d %08d %12ld %12ld\n", values.felix_server, values.run, values.tot_hits, values.evt);
     
         filename = output_path + Form("intt%d_run_%08d.root", values.felix_server, values.run);
         printf("\n\n");
         printf("Writing to file:\n\t%s\n", filename.c_str());
         printf("\n\n");
-        TFile* file = TFile::Open(filename.c_str());
+        TFile* file = TFile::Open(filename.c_str(), "RECREATE");
         tree->SetDirectory(file);
         tree->Write();
         file->Write();
         file->Close();
     }
 
-
+    fclose(fptr);
 
     return 0;
 }
