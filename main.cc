@@ -48,21 +48,23 @@ int main(int argc, char** argv)
         printf("\tfelix server: %d\trun number: %d\n", values.felix_server, values.run);
         printf("\n\n");
 
+        values.evt = 0;
+        values.tot_hits = 0;
         prun();
 
         printf("Hits per event: %lf\n", (double)values.tot_hits / (double)values.evt);
         if(fptr)fprintf(fptr, "%d %08d %12ld %12ld\n", values.felix_server, values.run, values.tot_hits, values.evt);
-    
-        filename = output_path + Form("intt%d_run_%08d.root", values.felix_server, values.run);
-        printf("\n\n");
-        printf("Writing to file:\n\t%s\n", filename.c_str());
-        printf("\n\n");
-        TFile* file = TFile::Open(filename.c_str(), "RECREATE");
-        tree->SetDirectory(file);
-        tree->Write();
-        file->Write();
-        file->Close();
     }
+
+    filename = output_path + Form("run_%08d.root", values.run);
+    printf("\n\n");
+    printf("Writing to file:\n\t%s\n", filename.c_str());
+    printf("\n\n");
+    TFile* file = TFile::Open(filename.c_str(), "RECREATE");
+    file->cd();
+    tree->Write();
+    file->Write();
+    file->Close();
 
     fclose(fptr);
 

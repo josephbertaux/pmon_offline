@@ -2,7 +2,6 @@
 
 #include "pmon.h"
 
-
 struct InttOnline_s values = (struct InttOnline_s){};
 TTree* tree = nullptr;
 
@@ -11,7 +10,7 @@ int pinit()
     if(!tree)
     {
         tree = new TTree("tree", "tree");
-
+        
         tree->Branch("full_bco", &values.full_bco);
         tree->Branch("bco", &values.bco);
         tree->Branch("felix_server", &values.felix_server);
@@ -24,7 +23,6 @@ int pinit()
         tree->Branch("evt", &values.evt);
     }
 
-    tree->Reset();
     values = (struct InttOnline_s){};
 
     return 0;
