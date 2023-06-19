@@ -8,12 +8,14 @@
 
 #include <TFile.h>
 
-std::string text_file = "/home/phnxrc/INTT/commissioning_5_23/HITS_PER_EVENT_BY_RUN.txt";
-std::string output_path = "/home/phnxrc/INTT/commissioning_5_23/hit_files/";
+//std::string text_file = "/home/phnxrc/INTT/commissioning_5_23/HITS_PER_EVENT_BY_RUN.txt";
+//std::string text_file = "/home/phnxrc/INTT/commissioning_5_30/HITS_PER_EVENT_BY_RUN.txt";
+//std::string output_path = "/home/phnxrc/INTT/commissioning_5_23/hit_files/";
+std::string output_path = "/bbox/commissioning/INTT/hit_files/";
 
 int main(int argc, char** argv)
 {
-    FILE* fptr = fopen(text_file.c_str(), "a");
+    FILE* fptr = nullptr;//fopen(text_file.c_str(), "a");
     std::string filename;
 
     std::vector<std::string> replacements = {"_", "-", "."};
@@ -66,7 +68,7 @@ int main(int argc, char** argv)
     file->Write();
     file->Close();
 
-    fclose(fptr);
+    if(fptr)fclose(fptr);
 
     return 0;
 }

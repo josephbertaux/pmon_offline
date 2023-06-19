@@ -35,27 +35,30 @@ int process_event(Event* e)
     Packet* p = e->getPacket(values.felix_server + 3001);
     if(!p)return 0;
 
-    int N = p->iValue(0, "NR_HITS");
-    if(!N)return 0;
+    values.num_hits = p->iValue(0, "NR_HITS");
+    values.full_bco = p->lValue(0, "BCO");
 
-    //printf("%d", N);
+    //values.evt = (uint32_t)(p->iValue(0, "DATAWORD"));
+    //values.evt = (values.evt & 0xffff0000) >> 0x10;// + (values.evt & 0x0000ffff) << 0x10;
 
-    for(int n = 0; n < N; ++n)
+    for(int n = 0; n < values.num_hits; ++n)
     {
-        values.full_bco = p->lValue(n, "BCO");
-        values.bco = p->iValue(n, "FPHX_BCO");
         values.felix_module = p->iValue(n, "FEE");
+
+        values.bco = p->iValue(n, "FPHX_BCO");
         values.chp = p->iValue(n, "CHIP_ID") % 26;
         values.chn = p->iValue(n, "CHANNEL_ID");
         values.adc = p->iValue(n, "ADC");
         values.amp = p->iValue(n, "AMPLITUDE");
-        values.num_hits = N;
 
         tree->Fill();
     }
 
-    values.tot_hits += N;
+    values.tot_hits += values.num_hits;
     ++values.evt;
+    //tree->Fill();
+
+    delete p;
 
     return 0;
 }

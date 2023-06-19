@@ -5,7 +5,8 @@
 #include <Event/Event.h>
 #include <Event/EventTypes.h>
 
-#include <stdio.h>
+#include <cstdio>
+#include <cstdint>
 
 #include <TTree.h>
 
